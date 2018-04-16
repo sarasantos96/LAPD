@@ -3,10 +3,10 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'key0'
-            keyPassword 'nunomiguel'
-            storeFile file('/home/nuno/Desktop/LAPD/getout.keystore.jks')
-            storePassword 'nunomiguel'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file('../keystores/debug.keystore')
+            storePassword 'android'
         }
     }
     compileSdkVersion 27
