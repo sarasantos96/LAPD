@@ -8,10 +8,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
@@ -79,6 +81,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         if (requestCode == 9000) {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
+
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
@@ -101,7 +104,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void updateUI(@Nullable GoogleSignInAccount account) {
+    private void updateUI(GoogleSignInAccount account) {
         if (account != null) {
             mStatusTextView.setText(account.getDisplayName());
 
