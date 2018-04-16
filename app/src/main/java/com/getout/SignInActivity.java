@@ -1,4 +1,4 @@
-package com.example.nuno.getout;
+package com.getout;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;

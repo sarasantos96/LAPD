@@ -1,4 +1,4 @@
-package com.example.nuno.getout;
+package com.getout;
 
 import org.junit.Test;
 
