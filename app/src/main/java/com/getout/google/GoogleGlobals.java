@@ -8,4 +8,6 @@ public class GoogleGlobals {
     public static GoogleSignInOptions options;
     public static GoogleSignInClient client;
     public static GoogleSignInAccount account;
+
+    public static int RC_SIGNIN = 9001;
 }
