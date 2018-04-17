@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
@@ -41,6 +42,21 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
         // Build a GoogleSignInClient with the options specified by gso.
         gsc = GoogleSignIn.getClient(this, gso);
+
+
+        //TEST
+        Button button = (Button) findViewById(R.id.teste_button);
+
+        // Capture button clicks
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+
+                // Start NewActivity.class
+                Intent myIntent = new Intent(SignInActivity.this,
+                        MapsActivity.class);
+                startActivity(myIntent);
+            }
+        });
     }
 
     @Override
@@ -114,6 +130,11 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
         }
+    }
+
+    private void testMaps(View view){
+        Intent i = new Intent(SignInActivity.this, MapsActivity.class);
+        startActivity(i);
     }
 
 }
