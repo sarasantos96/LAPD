@@ -1,7 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-
+    signingConfigs {
+        config {
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file('../keystores/debug.keystore')
+            storePassword 'android'
+        }
+    }
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.getout"

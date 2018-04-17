@@ -1,6 +1,7 @@
 package com.getout;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 public class SignInActivity extends AppCompatActivity implements View.OnClickListener {
@@ -45,7 +47,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
 
         //TEST
-        Button button = (Button) findViewById(R.id.teste_button);
+        Button button = (Button) findViewById(R.id.testMapsButton);
 
         // Capture button clicks
         button.setOnClickListener(new View.OnClickListener() {
@@ -80,13 +82,25 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.sign_in_button:
                 signIn();
                 break;
-            // ...
+            case R.id.sign_out_button:
+                signOut();
+                break;
         }
     }
 
     private void signIn() {
         Intent signInIntent = gsc.getSignInIntent();
         startActivityForResult(signInIntent, 9000);
+    }
+
+    private void signOut() {
+        gsc.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        updateUI(gsa);
+                    }
+                });
     }
 
     @Override
@@ -108,9 +122,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             gsa = completedTask.getResult(ApiException.class);
 
             // Signed in successfully, show authenticated UI.
-            Log.w("account display name", gsa.getDisplayName());
-            Log.w("account display name", gsa.getEmail());
-
             updateUI(gsa);
         } catch (ApiException e) {
             // The ApiException status code indimStatusTextViewcates the detailed failure reason.
@@ -125,10 +136,12 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             mStatusTextView.setText(account.getDisplayName());
 
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+            findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
         } else {
-            mStatusTextView.setText("Xau");
+            mStatusTextView.setText("No account");
 
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.sign_out_button).setVisibility(View.GONE);
         }
     }
 
