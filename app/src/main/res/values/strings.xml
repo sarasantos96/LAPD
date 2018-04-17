@@ -5,4 +5,5 @@
     <string name="title_location_permission">Allow location access?</string>
     <string name="ok">Ok</string>
     <string name="text_location_permission">Allow location access</string>
+    <string name="search_hint">Search for venues</string>
 </resources>
