@@ -26,29 +26,11 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
 
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleGlobals.options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
 
-        // Build a GoogleSignInClient with the options specified by gso.
         GoogleGlobals.client = GoogleSignIn.getClient(this, GoogleGlobals.options);
-
-
-        //TEST
-        /*Button button = (Button) findViewById(R.id.testMapsButton);
-
-        // Capture button clicks
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg0) {
-
-                // Start NewActivity.class
-                Intent myIntent = new Intent(SignInActivity.this,
-                        MapsActivity.class);
-                startActivity(myIntent);
-            }
-        });*/
     }
 
     @Override
@@ -59,9 +41,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         // the GoogleSignInAccount will be non-null.
         GoogleGlobals.account = GoogleSignIn.getLastSignedInAccount(this);
 
-        if(GoogleGlobals.account == null){
-            //TODO Show login button
-        }else{
+        if(GoogleGlobals.account != null){
             updateUI(GoogleGlobals.account);
         }
     }
@@ -77,7 +57,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     private void signIn() {
         Intent signInIntent = GoogleGlobals.client.getSignInIntent();
-        startActivityForResult(signInIntent, 9001);
+        startActivityForResult(signInIntent, GoogleGlobals.RC_SIGNIN);
     }
 
 
@@ -85,11 +65,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
-        if (requestCode == 9001) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
-
+        if (requestCode == GoogleGlobals.RC_SIGNIN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
@@ -99,11 +75,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         try {
             GoogleGlobals.account = completedTask.getResult(ApiException.class);
 
-            // Signed in successfully, show authenticated UI.
             updateUI(GoogleGlobals.account);
         } catch (ApiException e) {
-            // The ApiException status code indimStatusTextViewcates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w("TAG", "signInResult:failed code=" + e.getStatusCode());
             updateUI(null);
         }
@@ -111,17 +84,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     private void updateUI(GoogleSignInAccount account) {
         if (account != null) {
-            //TODO redirect to maps activity
             Intent i = new Intent(SignInActivity.this, MapsActivity.class);
             startActivity(i);
-        } else {
-            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
         }
     }
-
-    private void testMaps(View view){
-        Intent i = new Intent(SignInActivity.this, MapsActivity.class);
-        startActivity(i);
-    }
-
 }
