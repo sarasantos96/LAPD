@@ -1,7 +1,8 @@
-package com.getout;
+package com.getout.weather;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedInputStream;
@@ -13,9 +14,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class WeatherAPI extends AsyncTask<String,Void,String> {
+public class GetWeatherByLocation extends AsyncTask<String,Void,String> {
     private Activity activity;
-    public WeatherAPI(Activity activity) {
+    public GetWeatherByLocation(Activity activity) {
         this.activity = activity;
     }
 
@@ -28,7 +29,7 @@ public class WeatherAPI extends AsyncTask<String,Void,String> {
             URL url = new URL("http://api.openweathermap.org/data/2.5/weather?" +
                     "lat="+URLEncoder.encode(params[0], "UTF-8") +
                     "&lon=" + URLEncoder.encode(params[1], "UTF-8") +
-                    "&APPID=85cb065e73f69c82d068df58ca90446c");
+                    "&APPID=" + WeatherAPI.OWM_APPID  + "&mode=xml");
             conn = (HttpURLConnection) url.openConnection();
             InputStream in = new BufferedInputStream(conn.getInputStream());
             if (in != null) {
@@ -56,6 +57,6 @@ public class WeatherAPI extends AsyncTask<String,Void,String> {
         // TODO Auto-generated method stub
         super.onPostExecute(result);
         Toast.makeText(activity.getApplicationContext(), result, Toast.LENGTH_LONG).show();
-
+        Log.d("weather", result);
     }
 }
