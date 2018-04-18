@@ -1,26 +1,22 @@
 package com.getout.activities;
 
 import android.Manifest;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.widget.EditText;
-import android.widget.ImageView;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.getout.R;
+import com.getout.foursquare.SearchVenues;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -32,14 +28,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.util.concurrent.ExecutionException;
+
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationClient;
-
-
+    private LatLng lastKnowLocation;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +50,40 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
         setCurrentKnowLocation();
 
+        searchView = findViewById(R.id.search);
+        searchView.setOnQueryTextListener(searchQueryListener);
+        searchView.setQuery("", false);
+        searchView.clearFocus();
     }
+    private SearchView.OnQueryTextListener searchQueryListener = new SearchView.OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            search(query);
+            return true;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String newText) {
+
+            return true;
+        }
+
+        public void search(String query) {
+            searchView.setQuery("", false);
+            searchView.clearFocus();
+            SearchVenues f = new SearchVenues(MapsActivity.this);
+            try {
+                String ll =lastKnowLocation.latitude +","+lastKnowLocation.longitude;
+                f.execute(ll,query).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+
+    };
+
 
     private void setCurrentKnowLocation() {
         if(mMap != null && ContextCompat.checkSelfPermission(this,
@@ -67,6 +98,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             if (location != null) {
                                 LatLng newcoord = new LatLng(location.getLatitude(), location.getLongitude());
                                 mMap.moveCamera(CameraUpdateFactory.newLatLng(newcoord));
+                                lastKnowLocation = new LatLng(location.getLatitude(), location.getLongitude());
                             }
                         }
                     });
@@ -115,6 +147,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             if (location != null) {
                                 LatLng newcoord = new LatLng(location.getLatitude(), location.getLongitude());
                                 mMap.moveCamera(CameraUpdateFactory.newLatLng(newcoord));
+                                lastKnowLocation = new LatLng(location.getLatitude(), location.getLongitude());
                             }
                         }
                     });
