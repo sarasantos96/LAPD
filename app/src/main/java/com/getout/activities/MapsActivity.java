@@ -52,10 +52,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
         setCurrentKnowLocation();
 
+
         searchView = findViewById(R.id.search);
         searchView.setOnQueryTextListener(searchQueryListener);
-        searchView.setQuery("", false);
-        searchView.clearFocus();
+
     }
     private SearchView.OnQueryTextListener searchQueryListener = new SearchView.OnQueryTextListener() {
         @Override
@@ -185,7 +185,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             new GoogleMap.OnMyLocationButtonClickListener() {
                 @Override
                 public boolean onMyLocationButtonClick() {
-                    mMap.setMinZoomPreference(15);
                     return false;
                 }
             };
@@ -194,8 +193,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             new GoogleMap.OnMyLocationClickListener() {
                 @Override
                 public void onMyLocationClick(@NonNull Location location) {
-
-                    mMap.setMinZoomPreference(12);
 
                     CircleOptions circleOptions = new CircleOptions();
                     circleOptions.center(new LatLng(location.getLatitude(),
@@ -218,7 +215,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void addMarker(Venue venue){
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(venue.getLocation().latitude, venue.getLocation().longitude))
-                .title(venue.getName()));
+                .title(venue.getName())
+                .snippet(venue.getAddress()));
 
     }
 

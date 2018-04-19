@@ -104,7 +104,12 @@ public class SearchVenues extends AsyncTask<String,Void,String>{
             JSONObject jsonLocation = (JSONObject) temp.get("location");
             LatLng ll = new LatLng(jsonLocation.getDouble("lat"), jsonLocation.getDouble("lng"));
 
-            venues.add(new Venue(ll, "", name, "", null));
+            String address="" ;
+            if(jsonLocation.has("address")){
+                address = jsonLocation.getString("address");
+            }
+
+            venues.add(new Venue(ll, id, name, address, null));
         }
         return venues;
     }
