@@ -2,17 +2,19 @@ package com.getout.foursquare;
 
 import android.location.Location;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 public class Venue {
-    private Location location;
+    private LatLng location;
     private String id;
     private String name;
     private String address;
     //TODO: Change to array list of categories
     private ArrayList<String> categories;
 
-    public Venue(Location location, String id, String name, String address, ArrayList<String> categories) {
+    public Venue(LatLng location, String id, String name, String address, ArrayList<String> categories) {
         this.location = location;
         this.id = id;
         this.name = name;
@@ -20,7 +22,7 @@ public class Venue {
         this.categories = categories;
     }
 
-    public Location getLocation() {
+    public LatLng getLocation() {
         return location;
     }
 

@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.getout.R;
 import com.getout.foursquare.SearchVenues;
+import com.getout.foursquare.Venue;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,6 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 
@@ -207,10 +209,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             };
 
-    public void testAddMarker(){
+    public void addArrayVenues(ArrayList<Venue> venues){
+        for(int i = 0 ; i < venues.size(); i++){
+            addMarker(venues.get(i));
+        }
+    }
+
+    public void addMarker(Venue venue){
         mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(40.72, -73.93))
-                .title("Hello world"));
+                .position(new LatLng(venue.getLocation().latitude, venue.getLocation().longitude))
+                .title(venue.getName()));
 
     }
 

@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.getout.activities.MapsActivity;
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,8 +26,8 @@ import static com.getout.foursquare.FoursquareGlobals.FOURSQUARE_CLIENT_SECRET;
 
 
 public class SearchVenues extends AsyncTask<String,Void,String>{
-    private Activity activity;
-    public SearchVenues(Activity activity) {
+    private MapsActivity activity;
+    public SearchVenues(MapsActivity activity) {
         this.activity = activity;
     }
 
@@ -75,7 +78,7 @@ public class SearchVenues extends AsyncTask<String,Void,String>{
         // TODO Auto-generated method stub
         super.onPostExecute(result);
 
-       /* ArrayList<Venue> venues = null;
+        ArrayList<Venue> venues = null;
         if(result != null) {
             try {
                 venues = parseResult(result);
@@ -83,21 +86,25 @@ public class SearchVenues extends AsyncTask<String,Void,String>{
                 e.printStackTrace();
             }
         }
-        String vn = "";
-        for(int i=0; i < venues.size(); i++){
-            vn += venues.get(i).getName();
-        }*/
-        Toast.makeText(activity.getApplicationContext(), result, Toast.LENGTH_LONG).show();
+        activity.addArrayVenues(venues);
     }
 
     private ArrayList<Venue> parseResult(String result) throws JSONException {
         ArrayList<Venue> venues = new ArrayList<>();
         JSONObject jsonObject = new JSONObject(result);
-        JSONArray jsonVenues = (JSONArray) jsonObject.get("venues");
+        JSONObject jsonresponse = new JSONObject(jsonObject.get("response").toString());
+        JSONArray jsonVenues = (JSONArray) jsonresponse.get("venues");
         for(int i = 0; i < jsonVenues.length(); i++){
             JSONObject temp = new JSONObject(jsonVenues.get(i).toString());
             String name = temp.getString("name");
-            venues.add(new Venue(null, "", name, "", null));
+            String id = temp.getString("id");
+
+
+            //Location
+            JSONObject jsonLocation = (JSONObject) temp.get("location");
+            LatLng ll = new LatLng(jsonLocation.getDouble("lat"), jsonLocation.getDouble("lng"));
+
+            venues.add(new Venue(ll, "", name, "", null));
         }
         return venues;
     }
