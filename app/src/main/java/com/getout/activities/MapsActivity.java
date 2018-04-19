@@ -26,6 +26,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -40,6 +41,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private FusedLocationProviderClient mFusedLocationClient;
     private LatLng lastKnowLocation;
     private SearchView searchView;
+    private ArrayList<Marker> markers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         searchView = findViewById(R.id.search);
         searchView.setOnQueryTextListener(searchQueryListener);
+
+        markers = new ArrayList<>();
 
     }
     private SearchView.OnQueryTextListener searchQueryListener = new SearchView.OnQueryTextListener() {
@@ -206,17 +210,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             };
 
+    public void cleanMarkers(){
+        for(int i=0 ; i < markers.size(); i++){
+            markers.get(i).remove();
+        }
+    }
+
     public void addArrayVenues(ArrayList<Venue> venues){
+        cleanMarkers();
         for(int i = 0 ; i < venues.size(); i++){
             addMarker(venues.get(i));
         }
     }
 
     public void addMarker(Venue venue){
-        mMap.addMarker(new MarkerOptions()
+
+        Marker marker = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(venue.getLocation().latitude, venue.getLocation().longitude))
                 .title(venue.getName())
                 .snippet(venue.getAddress()));
+        markers.add(marker);
 
     }
 
