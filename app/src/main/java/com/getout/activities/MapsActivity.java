@@ -13,11 +13,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.getout.R;
 import com.getout.foursquare.SearchVenues;
 import com.getout.foursquare.Venue;
+import com.getout.utils.Utils;
+import com.getout.weather.Weather;
+import com.getout.weather.WeatherAPI;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -59,6 +63,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         searchView.setOnQueryTextListener(searchQueryListener);
 
         markers = new ArrayList<>();
+
+        WeatherAPI w_api = new WeatherAPI();
+        w_api.updateLocationWeather(this);
+
 
     }
     private SearchView.OnQueryTextListener searchQueryListener = new SearchView.OnQueryTextListener() {
@@ -231,6 +239,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .snippet(venue.getAddress()));
         markers.add(marker);
 
+    }
+
+    public void setWeather(Weather w){
+        TextView temp = findViewById(R.id.tv_temp);
+        TextView desc = findViewById(R.id.tv_desc);
+
+        temp.setText("" + Utils.round(w.getTemperature(), 1) + " ºC");
+        desc.setText(w.getWeather() + "\n" + w.getCity() + ", " + w.getCountry());
     }
 
 

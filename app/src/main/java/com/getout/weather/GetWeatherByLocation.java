@@ -5,6 +5,9 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.getout.activities.MapsActivity;
+import com.getout.activities.SignInActivity;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,7 +25,6 @@ public class GetWeatherByLocation extends AsyncTask<String,Void,String> {
 
     @Override
     protected String doInBackground(String... params) {
-        // TODO Auto-generated method stub
         String result = "";
         HttpURLConnection conn = null;
         try {
@@ -42,13 +44,13 @@ public class GetWeatherByLocation extends AsyncTask<String,Void,String> {
             in.close();
             return result;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         finally {
             if(conn!=null)
                 conn.disconnect();
         }
+
         return result;
     }
 
@@ -56,7 +58,12 @@ public class GetWeatherByLocation extends AsyncTask<String,Void,String> {
     protected void onPostExecute(String result) {
         // TODO Auto-generated method stub
         super.onPostExecute(result);
-        Toast.makeText(activity.getApplicationContext(), result, Toast.LENGTH_LONG).show();
-        Log.d("weather", result);
+
+        Weather w = new Weather(result);
+        WeatherGlobals.current_location_weather = w;
+
+        if(this.activity instanceof MapsActivity){
+            ((MapsActivity) this.activity).setWeather(w);
+        }
     }
 }

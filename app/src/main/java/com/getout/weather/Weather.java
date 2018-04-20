@@ -54,4 +54,16 @@ public class Weather {
     public String getWeather() {
         return weather;
     }
+
+    @Override
+    public String toString() {
+        return "Weather{" +
+                "city='" + city + '\'' +
+                ", city_id='" + city_id + '\'' +
+                ", country='" + country + '\'' +
+                ", temperature=" + temperature +
+                ", wind='" + wind + '\'' +
+                ", weather='" + weather + '\'' +
+                '}';
+    }
 }
