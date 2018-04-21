@@ -12,8 +12,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import org.json.JSONArray;
@@ -40,14 +42,19 @@ public class SearchVenues extends AsyncTask<String,Void,String>{
     protected String doInBackground(String... params) {
 
         String result = "";
-        String s_url = "https://api.foursquare.com/v2/venues/search?"
-        +"client_id=" + FOURSQUARE_CLIENT_ID
-                +"&client_secret="+ FOURSQUARE_CLIENT_SECRET
-                +"&v=20180418"
-                +"&radius=5000"
-                +"&intent=browse"
-                +"&ll=" + params[0]
-                +"&query=" + params[1];
+        String s_url = null;
+        try {
+            s_url = "https://api.foursquare.com/v2/venues/search?"
+            +"client_id=" + FOURSQUARE_CLIENT_ID
+                    +"&client_secret="+ FOURSQUARE_CLIENT_SECRET
+                    +"&v=20180418"
+                    +"&radius=5000"
+                    +"&intent=browse"
+                    +"&ll=" + params[0]
+                    +"&query=" + URLEncoder.encode(params[1], "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         HttpURLConnection conn = null;
         try {
             URL url = new URL(s_url);

@@ -208,6 +208,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             new GoogleMap.OnMyLocationButtonClickListener() {
                 @Override
                 public boolean onMyLocationButtonClick() {
+                    setCurrentKnowLocation();
                     return false;
                 }
             };
@@ -226,6 +227,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     circleOptions.strokeWidth(6);
 
                     mMap.addCircle(circleOptions);
+                    lastKnowLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 }
             };
 
