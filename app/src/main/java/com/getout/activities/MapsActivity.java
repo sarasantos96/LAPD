@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
@@ -62,6 +63,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         searchView = findViewById(R.id.search);
         searchView.setOnQueryTextListener(searchQueryListener);
+        searchView.onActionViewExpanded();
+        searchView.setIconified(false);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                searchView.clearFocus();
+            }
+        }, 300);
 
         markers = new ArrayList<>();
 
