@@ -11,6 +11,7 @@ public class Weather {
     private double temperature;
     private String wind;
     private String weather;
+    private String weather_icon;
 
     private static final String XPATH_CITY_NAME = "/current/city/@name";
     private static final String XPATH_CITY_ID = "/current/city/@id";
@@ -18,6 +19,7 @@ public class Weather {
     private static final String XPATH_TEMP = "/current/temperature/@value";
     private static final String XPATH_WIND = "/current/wind/speed/@name";
     private static final String XPATH_WEATHER = "/current/weather/@value";
+    private static final String XPATH_WEATHER_ICON = "/current/weather/@icon";
 
     public Weather(String xml) {
         XPathFactory xpath_factory = XPathFactory.newInstance();
@@ -28,7 +30,7 @@ public class Weather {
         temperature = Double.parseDouble(Utils.executeXpath(xpath_factory, XPATH_TEMP, xml)) - 273.15;
         wind = Utils.executeXpath(xpath_factory, XPATH_WIND, xml);
         weather = Utils.capitalizeWords(Utils.executeXpath(xpath_factory, XPATH_WEATHER, xml));
-
+        weather_icon = Utils.executeXpath(xpath_factory, XPATH_WEATHER_ICON, xml);
     }
 
     public String getCity() {
@@ -53,6 +55,10 @@ public class Weather {
 
     public String getWeather() {
         return weather;
+    }
+
+    public String getWeatherIcon() {
+        return weather_icon;
     }
 
     @Override
