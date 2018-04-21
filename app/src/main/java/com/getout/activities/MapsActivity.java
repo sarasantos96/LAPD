@@ -46,6 +46,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LatLng lastKnowLocation;
     private SearchView searchView;
     private ArrayList<Marker> markers;
+    WeatherAPI w_api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +65,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         markers = new ArrayList<>();
 
-        WeatherAPI w_api = new WeatherAPI();
-        w_api.updateLocationWeather(this, lastKnowLocation);
-
 
     }
+
     private SearchView.OnQueryTextListener searchQueryListener = new SearchView.OnQueryTextListener() {
         @Override
         public boolean onQueryTextSubmit(String query) {
@@ -87,8 +86,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             searchView.clearFocus();
             SearchVenues f = new SearchVenues(MapsActivity.this);
             try {
-                String ll =lastKnowLocation.latitude +","+lastKnowLocation.longitude;
-                f.execute(ll,query).get();
+                String ll = lastKnowLocation.latitude + "," + lastKnowLocation.longitude;
+                f.execute(ll, query).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -100,9 +99,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     private void setCurrentKnowLocation() {
-        if(mMap != null && ContextCompat.checkSelfPermission(this,
+        if (mMap != null && ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED){
+                == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
             mFusedLocationClient.getLastLocation()
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
@@ -113,6 +112,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 LatLng newcoord = new LatLng(location.getLatitude(), location.getLongitude());
                                 mMap.moveCamera(CameraUpdateFactory.newLatLng(newcoord));
                                 lastKnowLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                                w_api.updateLocationWeather(MapsActivity.this, new LatLng(location.getLatitude(),location.getLongitude()));
                             }
                         }
                     });
@@ -133,13 +133,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        w_api = new WeatherAPI();
 
         enableMyLocationIfPermitted();
         mMap.setOnMyLocationButtonClickListener(onMyLocationButtonClickListener);
         mMap.setOnMyLocationClickListener(onMyLocationClickListener);
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setMinZoomPreference(11);
-
     }
 
     private void enableMyLocationIfPermitted() {
@@ -162,6 +162,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 LatLng newcoord = new LatLng(location.getLatitude(), location.getLongitude());
                                 mMap.moveCamera(CameraUpdateFactory.newLatLng(newcoord));
                                 lastKnowLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                                w_api.updateLocationWeather(MapsActivity.this, new LatLng(location.getLatitude(),location.getLongitude()));
                             }
                         }
                     });
