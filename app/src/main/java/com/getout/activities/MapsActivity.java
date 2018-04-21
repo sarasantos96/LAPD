@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -254,9 +255,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void setWeather(Weather w){
         TextView temp = findViewById(R.id.tv_temp);
         TextView desc = findViewById(R.id.tv_desc);
+        ImageView icon = findViewById(R.id.weather_icon);
 
         temp.setText("" + Utils.round(w.getTemperature(), 1) + " ºC");
         desc.setText(w.getWeather() + "\n" + w.getCity() + ", " + w.getCountry());
+        int image_id = getResources().getIdentifier("i" + w.getWeatherIcon(), "drawable", this.getApplicationContext().getPackageName());
+        icon.setImageResource(image_id);
     }
 
 
