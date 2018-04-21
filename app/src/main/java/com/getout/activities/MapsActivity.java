@@ -65,7 +65,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         markers = new ArrayList<>();
 
         WeatherAPI w_api = new WeatherAPI();
-        w_api.updateLocationWeather(this);
+        w_api.updateLocationWeather(this, lastKnowLocation);
 
 
     }
