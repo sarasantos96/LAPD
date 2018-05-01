@@ -1,8 +1,6 @@
 package com.getout.foursquare;
 
-import android.app.Activity;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import com.getout.activities.MapsActivity;
 import com.google.android.gms.maps.model.LatLng;
@@ -17,7 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Iterator;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

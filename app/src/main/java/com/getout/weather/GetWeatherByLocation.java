@@ -2,11 +2,8 @@ package com.getout.weather;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.getout.activities.MapsActivity;
-import com.getout.activities.SignInActivity;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
