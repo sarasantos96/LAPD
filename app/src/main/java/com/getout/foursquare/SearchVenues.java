@@ -23,6 +23,7 @@ import org.json.JSONObject;
 
 import static com.getout.foursquare.FoursquareGlobals.FOURSQUARE_CLIENT_ID;
 import static com.getout.foursquare.FoursquareGlobals.FOURSQUARE_CLIENT_SECRET;
+import static com.getout.foursquare.FoursquareGlobals.RADIUS;
 
 
 public class SearchVenues extends AsyncTask<String,Void,String>{
@@ -46,7 +47,7 @@ public class SearchVenues extends AsyncTask<String,Void,String>{
             +"client_id=" + FOURSQUARE_CLIENT_ID
                     +"&client_secret="+ FOURSQUARE_CLIENT_SECRET
                     +"&v=20180418"
-                    +"&radius=5000"
+                    +"&radius=" + RADIUS * 1000
                     +"&intent=browse"
                     +"&ll=" + params[0]
                     +"&query=" + URLEncoder.encode(params[1], "UTF-8");

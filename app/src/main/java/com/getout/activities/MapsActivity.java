@@ -16,16 +16,19 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.getout.R;
 import com.getout.foursquare.SearchVenues;
 import com.getout.foursquare.Venue;
+import com.getout.google.GoogleGlobals;
 import com.getout.utils.Utils;
 import com.getout.weather.Weather;
 import com.getout.weather.WeatherAPI;
@@ -65,20 +68,31 @@ public class MapsActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View headerLayout = navigationView.getHeaderView(0);
+        ImageView profileImage = (ImageView) headerLayout.findViewById(R.id.profileImage);
+        TextView profileName = (TextView) headerLayout.findViewById(R.id.profileName);
+        TextView profileEmail = (TextView) headerLayout.findViewById(R.id.profileEmail);
+
+        Glide.with(this)
+                .load(GoogleGlobals.account.getPhotoUrl())
+                .apply(RequestOptions.circleCropTransform())
+                .into(profileImage);
+
+        profileName.setText(GoogleGlobals.account.getDisplayName());
+        profileEmail.setText(GoogleGlobals.account.getEmail());
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         setCurrentKnowLocation();
-
 
         searchView = findViewById(R.id.search);
         searchView.setOnQueryTextListener(searchQueryListener);
@@ -121,19 +135,11 @@ public class MapsActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Intent intent = null;
 
-        if (id == R.id.nav_cria_rota) {
-
-        } else if (id == R.id.nav_minhas_rotas) {
-
-        } else if (id == R.id.nav_prev) {
-
-        } else if (id == R.id.nav_destaques) {
-
-        } else if (id == R.id.nav_conf) {
-
-        }else if(id == R.id.nav_acerca){
-
+        if (id == R.id.settings) {
+            intent = new Intent(MapsActivity.this, SettingsActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

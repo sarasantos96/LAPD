@@ -25,7 +25,7 @@
     <item android:title="A minha conta">
         <menu>
             <item
-                android:id="@+id/nav_conf"
+                android:id="@+id/settings"
                 android:icon="@drawable/ic_settings_black_24dp"
                 android:title="Configurações" />
             <item
