@@ -12,7 +12,7 @@ public class ForecastAtom {
     public ForecastAtom(String weather, String weather_icon, double temperature, Date date_from, Date date_to) {
         this.weather = weather;
         this.weather_icon = weather_icon;
-        this.temperature = temperature;
+        this.temperature = temperature - 273.15;
         this.date_from = date_from;
         this.date_to = date_to;
     }

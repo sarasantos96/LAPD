@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+  <ImageView
+      android:id="@+id/forecast_list_icon"
+      android:layout_width="60dp"
+      android:layout_height="60dp"
+      android:layout_alignParentStart="true"
+      android:layout_centerVertical="true"
+      android:layout_marginBottom="6dp"
+      android:layout_marginStart="4dp"
+      android:layout_marginTop="6dp"
+      android:scaleType="centerCrop"
+      app:srcCompat="@android:drawable/ic_delete"
+      tools:src="@mipmap/ic_launcher" />
+
+  <RelativeLayout
+      android:id="@+id/recipe_list_text_layout"
+      android:layout_width="290dp"
+      android:layout_height="60dp"
+      android:layout_alignBottom="@+id/forecast_list_icon"
+      android:layout_alignParentEnd="true">
+
+    <TextView
+        android:id="@+id/forecast_list_interval"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:textSize="18sp"
+        tools:text="15h - 18h / 21 May" />
+
+    <TextView
+        android:id="@+id/forecast_list_weather"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:textSize="18sp"
+        tools:text="15º C - Cloudy" />
+
+  </RelativeLayout>
+</RelativeLayout>

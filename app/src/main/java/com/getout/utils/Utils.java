@@ -13,6 +13,8 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 public class Utils {
+    private static final String[] months = {"January", "Febuary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+
     public static String executeXpath(XPathFactory xpath_factory, String expression, String xml){
         InputSource xml_input = new InputSource(new StringReader(xml));
         XPath xpath = xpath_factory.newXPath();
@@ -52,5 +54,9 @@ public class Utils {
     public static double round (double value, int precision) {
         int scale = (int) Math.pow(10, precision);
         return (double) Math.round(value * scale) / scale;
+    }
+
+    public static String getMonth(int month){
+        return months[month];
     }
 }

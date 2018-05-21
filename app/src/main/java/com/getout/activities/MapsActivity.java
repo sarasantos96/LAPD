@@ -1,6 +1,7 @@
 package com.getout.activities;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -15,6 +16,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -148,6 +150,13 @@ public class MapsActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);*/
+
+        int id = item.getItemId();
+        if(id == R.id.nav_slideshow){
+            Intent newAct = new Intent(getApplicationContext(), ForecastActivity.class);
+            newAct.putExtra("coords", "" + lastKnowLocation.latitude + "," + lastKnowLocation.longitude);
+            startActivity(newAct);
+        }
         return true;
     }
 

@@ -5,6 +5,9 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.getout.activities.ForecastActivity;
+import com.getout.activities.MapsActivity;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -56,7 +59,13 @@ public class GetForecastByLocation extends AsyncTask<String,Void,String> {
     protected void onPostExecute(String result) {
         // TODO Auto-generated method stub
         super.onPostExecute(result);
-        Toast.makeText(activity.getApplicationContext(), result, Toast.LENGTH_LONG).show();
-        Log.d("forecast", result);
+        Forecast f = new Forecast(result);
+        WeatherGlobals.current_location_forecast = f;
+        Log.d("result", result);
+
+        if(this.activity instanceof ForecastActivity){
+            ((ForecastActivity) this.activity).adapter.mDataSource = f.getAtoms();
+            ((ForecastActivity) this.activity).adapter.notifyDataSetChanged();
+        }
     }
 }
