@@ -5,19 +5,19 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_cria_rota"
             android:icon="@drawable/ic_navigation_black_24dp"
             android:title="Criar Rota" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_minhas_rotas"
             android:icon="@drawable/ic_map_black_24dp"
             android:title="Minhas Rotas" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_prev"
             android:icon="@drawable/ic_wb_sunny_black_24dp"
             android:title="Previsão 5 dias" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_destaques"
             android:icon="@drawable/ic_trending_up_black_24dp"
             android:title="Destaques" />
     </group>
@@ -25,11 +25,11 @@
     <item android:title="A minha conta">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_conf"
                 android:icon="@drawable/ic_settings_black_24dp"
                 android:title="Configurações" />
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_acerca"
                 android:icon="@drawable/ic_help_black_24dp"
                 android:title="Acerca" />
         </menu>

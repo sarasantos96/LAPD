@@ -3,7 +3,12 @@ package com.getout.foursquare;
 import android.os.AsyncTask;
 
 import com.getout.activities.MapsActivity;
+import com.getout.activities.VenueActivity;
 import com.google.android.gms.maps.model.LatLng;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -16,40 +21,23 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-
 import static com.getout.foursquare.FoursquareGlobals.FOURSQUARE_CLIENT_ID;
 import static com.getout.foursquare.FoursquareGlobals.FOURSQUARE_CLIENT_SECRET;
 
-
-public class SearchVenues extends AsyncTask<String,Void,String>{
-    private MapsActivity activity;
-    public SearchVenues(MapsActivity activity) {
+public class GetVenueDetails extends AsyncTask<String,Void,String> {
+    VenueActivity activity;
+    public GetVenueDetails(VenueActivity activity) {
         this.activity = activity;
     }
-
-    /*
-    params[0]: ll (latitude,longitude)
-    params[1]: query
-    TODO: make radius a parameter; now default is 5km
-     */
     @Override
     protected String doInBackground(String... params) {
-
         String result = "";
         String s_url = null;
         try {
-            s_url = "https://api.foursquare.com/v2/venues/search?"
-            +"client_id=" + FOURSQUARE_CLIENT_ID
+            s_url = "https://api.foursquare.com/v2/venues/"+URLEncoder.encode(params[0], "UTF-8") + "?"
+                    +"client_id=" + FOURSQUARE_CLIENT_ID
                     +"&client_secret="+ FOURSQUARE_CLIENT_SECRET
-                    +"&v=20180418"
-                    +"&radius=5000"
-                    +"&intent=browse"
-                    +"&ll=" + params[0]
-                    +"&query=" + URLEncoder.encode(params[1], "UTF-8");
+                    +"&v=20180418";
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -83,40 +71,59 @@ public class SearchVenues extends AsyncTask<String,Void,String>{
         // TODO Auto-generated method stub
         super.onPostExecute(result);
 
-        ArrayList<Venue> venues = null;
+        Venue venue = null;
         if(result != null) {
             try {
-                venues = parseResult(result);
+                venue = parseResult(result);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        activity.addArrayVenues(venues);
     }
 
-    private ArrayList<Venue> parseResult(String result) throws JSONException {
-        ArrayList<Venue> venues = new ArrayList<>();
+    private Venue parseResult(String result) throws JSONException {
+        Venue venue = new Venue();
+        String contact = "";
+        String description = "";
+        String url = "";
+        String photo = "";
+
         JSONObject jsonObject = new JSONObject(result);
         JSONObject jsonresponse = new JSONObject(jsonObject.get("response").toString());
-        JSONArray jsonVenues = (JSONArray) jsonresponse.get("venues");
-        for(int i = 0; i < jsonVenues.length(); i++){
-            JSONObject temp = new JSONObject(jsonVenues.get(i).toString());
-            String name = temp.getString("name");
-            String id = temp.getString("id");
+        JSONObject jsonVenue = (JSONObject) jsonresponse.get("venue");
 
-
-            //Location
-            JSONObject jsonLocation = (JSONObject) temp.get("location");
-            LatLng ll = new LatLng(jsonLocation.getDouble("lat"), jsonLocation.getDouble("lng"));
-
-            String address="" ;
-            if(jsonLocation.has("address")){
-                address = jsonLocation.getString("address");
-            }
-
-            venues.add(new Venue(ll, id, name, address, null));
+        //Get Contact Info
+        JSONObject jsonContact = (JSONObject) jsonVenue.get("contact");
+        if(jsonContact.has("formattedPhone")){
+            contact= jsonContact.getString("formattedPhone");
         }
-        return venues;
-    }
 
+        //Get description
+        if(jsonVenue.has("description")){
+            description = jsonVenue.getString("description");
+        }
+
+        //Get url
+        if(jsonVenue.has("url")){
+            url = jsonVenue.getString("url");
+        }
+
+        //Get photo
+        if(jsonVenue.has("bestPhoto")){
+            JSONObject photoJson = (JSONObject) jsonVenue.get("bestPhoto");
+            String suffix, prefix, size;
+
+            suffix = photoJson.getString("suffix");
+            prefix = photoJson.getString("prefix");
+            size = photoJson.getString("width") + "x" + photoJson.getString("height");
+            photo = prefix + size + suffix;
+        }
+
+        venue.setContact(contact);
+        venue.setDescription(description);
+        venue.setPhoto(photo);
+        venue.setUrl(url);
+
+        return venue;
+    }
 }
