@@ -7,10 +7,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.getout.R;
 import com.getout.foursquare.GetVenueDetails;
 import com.getout.foursquare.Venue;
@@ -23,6 +26,7 @@ import java.util.concurrent.ExecutionException;
 
 public class VenueActivity extends AppCompatActivity {
     private Venue venue;
+    private Venue detailedVenue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +36,12 @@ public class VenueActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String venueAsString = getIntent().getStringExtra("VenueString");
         venue = gson.fromJson(venueAsString, Venue.class);
+        detailedVenue = new Venue();
 
         setContentView(R.layout.activity_venue);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(venue.getName());
         setSupportActionBar(toolbar);
-        /*getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setImageResource(R.drawable.ic_add);
@@ -60,6 +62,39 @@ public class VenueActivity extends AppCompatActivity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setDetailedVenue(Venue venue){
+        this.detailedVenue = venue;
+
+        ImageView venueImage = (ImageView) findViewById(R.id.venueImageView);
+        TextView description = (TextView) findViewById(R.id.descriptionTextView);
+        TextView contact = (TextView) findViewById(R.id.contactTextView);
+
+        if( this.detailedVenue.getPhoto() != "" && this.detailedVenue.getPhoto() != null) {
+            Glide.with(this).load(this.detailedVenue.getPhoto()).apply(new RequestOptions()
+                    .placeholder(R.drawable.ic_venue)
+                    .centerCrop())
+                    .into(venueImage);
+        }
+
+        if(this.detailedVenue.getDescription() != null && this.detailedVenue.getDescription() != ""){
+            description.setText(this.detailedVenue.getDescription());
+        }
+        String c = "";
+        if(this.venue.getAddress() != null){
+            c += this.venue.getAddress();
+            c +="\n";
+        }
+
+        if(this.detailedVenue.getContact() != null && this.detailedVenue.getContact() != ""){
+            c += this.detailedVenue.getContact();
+            c += "\n\n";
+        }
+        c += "Latitude: "+ this.venue.getLocation().latitude + "\n";
+        c += "Longitude: " + this.venue.getLocation().longitude;
+        contact.setText(c);
+        Log.d("GET_DETAILS", c);
     }
 
 }

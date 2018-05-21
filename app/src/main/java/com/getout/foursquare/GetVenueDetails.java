@@ -78,6 +78,7 @@ public class GetVenueDetails extends AsyncTask<String,Void,String> {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            this.activity.setDetailedVenue(venue);
         }
     }
 

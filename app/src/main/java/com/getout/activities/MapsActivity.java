@@ -144,7 +144,7 @@ public class MapsActivity extends AppCompatActivity
         }
 
         
-        if(id == R.id.nav_slideshow){
+        if(id == R.id.nav_prev){
             Intent newAct = new Intent(getApplicationContext(), ForecastActivity.class);
             newAct.putExtra("coords", "" + lastKnowLocation.latitude + "," + lastKnowLocation.longitude);
             startActivity(newAct);
