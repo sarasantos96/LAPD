@@ -44,12 +44,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class MapsActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
+        implements NavigationView.OnNavigationItemSelectedListener, GoogleMap.OnInfoWindowClickListener, OnMapReadyCallback {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     private GoogleMap mMap;
@@ -57,6 +58,7 @@ public class MapsActivity extends AppCompatActivity
     private LatLng lastKnowLocation;
     private SearchView searchView;
     private ArrayList<Marker> markers;
+    private ArrayList<Venue> venues;
     WeatherAPI w_api;
 
     @Override
@@ -105,6 +107,7 @@ public class MapsActivity extends AppCompatActivity
         }, 300);
 
         markers = new ArrayList<>();
+        venues = new ArrayList<>();
     }
 
     @Override
@@ -117,7 +120,7 @@ public class MapsActivity extends AppCompatActivity
         }
     }
 
-    
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -132,31 +135,23 @@ public class MapsActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        /*int id = item.getItemId();
+        int id = item.getItemId();
+        Intent intent = null;
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.settings) {
+            intent = new Intent(MapsActivity.this, SettingsActivity.class);
+            startActivity(intent);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);*/
-
-        int id = item.getItemId();
+        
         if(id == R.id.nav_slideshow){
             Intent newAct = new Intent(getApplicationContext(), ForecastActivity.class);
             newAct.putExtra("coords", "" + lastKnowLocation.latitude + "," + lastKnowLocation.longitude);
             startActivity(newAct);
         }
+        
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -230,9 +225,10 @@ public class MapsActivity extends AppCompatActivity
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         w_api = new WeatherAPI();
 
+        mMap.setOnInfoWindowClickListener(this);
+
         enableMyLocationIfPermitted();
         mMap.setOnMyLocationButtonClickListener(onMyLocationButtonClickListener);
-        mMap.setOnMyLocationClickListener(onMyLocationClickListener);
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setMinZoomPreference(11);
     }
@@ -298,27 +294,11 @@ public class MapsActivity extends AppCompatActivity
                 }
             };
 
-    private GoogleMap.OnMyLocationClickListener onMyLocationClickListener =
-            new GoogleMap.OnMyLocationClickListener() {
-                @Override
-                public void onMyLocationClick(@NonNull Location location) {
-
-                    CircleOptions circleOptions = new CircleOptions();
-                    circleOptions.center(new LatLng(location.getLatitude(),
-                            location.getLongitude()));
-
-                    circleOptions.radius(200);
-                    circleOptions.fillColor(Color.RED);
-                    circleOptions.strokeWidth(6);
-
-                    mMap.addCircle(circleOptions);
-                    lastKnowLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                }
-            };
-
     public void cleanMarkers(){
         for(int i=0 ; i < markers.size(); i++){
             markers.get(i).remove();
+            venues.remove(i);
+            markers.remove(i);
         }
     }
 
@@ -336,7 +316,7 @@ public class MapsActivity extends AppCompatActivity
                 .title(venue.getName())
                 .snippet(venue.getAddress()));
         markers.add(marker);
-
+        venues.add(venue);
     }
 
     public void setWeather(Weather w){
@@ -349,4 +329,30 @@ public class MapsActivity extends AppCompatActivity
         int image_id = getResources().getIdentifier("i" + w.getWeatherIcon(), "drawable", this.getApplicationContext().getPackageName());
         icon.setImageResource(image_id);
     }
+
+    Venue getVenueByMarker(Marker marker){
+        Venue venue = null;
+
+        for(int i = 0; i < markers.size(); i++){
+            LatLng markerLoc = markers.get(i).getPosition();
+            if(markerLoc.longitude == marker.getPosition().longitude && markerLoc.latitude == marker.getPosition().latitude){
+                return venues.get(i);
+            }
+        }
+
+        return venue;
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Intent intent = new Intent(this, VenueActivity.class);
+        Venue venue = getVenueByMarker(marker);
+        if(venue == null)
+            return;
+        Gson gson = new Gson();
+        String venueAsString = gson.toJson(venue);
+        intent.putExtra("VenueString", venueAsString);
+        startActivity(intent);
+    }
+
 }

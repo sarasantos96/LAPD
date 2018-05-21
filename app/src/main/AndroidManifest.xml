@@ -42,6 +42,12 @@
             android:label="@string/title_activity_main2"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activities.VenueActivity"
+            android:label="@string/title_activity_venue"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".activities.SettingsActivity"></activity>
+        <activity
             android:name=".activities.ForecastActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
