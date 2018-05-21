@@ -34,9 +34,6 @@ public class SettingsActivity extends AppCompatActivity {
                 .into(profileImage);
         profileName.setText(GoogleGlobals.account.getDisplayName());
 
-        SharedPreferences prefs = this.getSharedPreferences("com.getout", Context.MODE_PRIVATE);
-        FoursquareGlobals.RADIUS = prefs.getInt("radius", 0);
-
         SeekBar bar = (SeekBar) findViewById(R.id.seekBar);
         bar.setProgress(FoursquareGlobals.RADIUS);
 

@@ -1,6 +1,8 @@
 package com.getout.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.getout.R;
+import com.getout.foursquare.FoursquareGlobals;
 import com.getout.google.GoogleGlobals;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -84,6 +87,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     private void updateUI(GoogleSignInAccount account) {
         if (account != null) {
+            SharedPreferences prefs = this.getSharedPreferences("com.getout", Context.MODE_PRIVATE);
+            FoursquareGlobals.RADIUS = prefs.getInt("radius", 0);
+
             Intent i = new Intent(SignInActivity.this, MapsActivity.class);
             startActivity(i);
         }
