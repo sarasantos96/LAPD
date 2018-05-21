@@ -33,7 +33,7 @@ public class SettingsActivity extends AppCompatActivity {
                 .apply(RequestOptions.circleCropTransform())
                 .into(profileImage);
         profileName.setText(GoogleGlobals.account.getDisplayName());
-        
+
         SharedPreferences prefs = this.getSharedPreferences("com.getout", Context.MODE_PRIVATE);
         FoursquareGlobals.RADIUS = prefs.getInt("radius", 0);
 
