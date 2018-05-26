@@ -13,13 +13,15 @@ import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class ReadWriteFile {
 
     public static void saveToFile(Context context, String file_name, String content){
-        Long tsLong = System.currentTimeMillis()/1000;
+        Long tsLong = System.currentTimeMillis();
         String ts = tsLong.toString();
 
+        Log.d("ts", "" + tsLong);
         Log.d("date", getDate(tsLong));
 
         try {
@@ -78,10 +80,10 @@ public class ReadWriteFile {
         return files;
     }
 
-    private static String getDate(long milliSeconds) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy 'at' HH:mm");
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis((int) milliSeconds);
-        return formatter.format(calendar.getTime());
+    public static String getDate(long milliSeconds) {
+        Date date = new Date();
+        date.setTime(milliSeconds);
+        String formattedDate=new SimpleDateFormat("dd-MM-yyyy 'at' HH:mm").format(date);
+        return formattedDate;
     }
 }

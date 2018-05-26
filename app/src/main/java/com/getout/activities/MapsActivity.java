@@ -149,7 +149,6 @@ public class MapsActivity extends AppCompatActivity
             startActivity(intent);
         }
 
-        
         if(id == R.id.nav_prev){
             Intent newAct = new Intent(getApplicationContext(), ForecastActivity.class);
             newAct.putExtra("coords", "" + lastKnowLocation.latitude + "," + lastKnowLocation.longitude);
@@ -158,6 +157,11 @@ public class MapsActivity extends AppCompatActivity
 
         if(id == R.id.nav_cria_rota){
             Intent newAct = new Intent(getApplicationContext(), MarkersActivity.class);
+            startActivity(newAct);
+        }
+
+        if(id == R.id.nav_minhas_rotas){
+            Intent newAct = new Intent(getApplicationContext(), RoutesActivity.class);
             startActivity(newAct);
         }
         
