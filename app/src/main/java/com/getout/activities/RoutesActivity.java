@@ -41,7 +41,7 @@ public class RoutesActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onItemClick(AdapterView<?> adapter, View v, int position, long arg3){
+            public void onItemClick(AdapterView<?> adapter, final View v, int position, long arg3){
                 final File file = (File)adapter.getItemAtPosition(position);
 
                 CharSequence colors[] = new CharSequence[] {"Show", "Delete"};
@@ -52,11 +52,14 @@ public class RoutesActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(which == 0) {
-                            //TODO
-                            /*
-                            Intent intent = new Intent(RoutesActivity.this, SettingsActivity.class);
+                            String contents = ReadWriteFile.readFromFile(v.getContext(), file.getName());
+
+                            Intent intent = new Intent(RoutesActivity.this, RouteActivity.class);
+                            intent.putExtra("RouteString", contents);
+                            intent.putExtra("name", "");
+                            intent.putExtra("save", "false");
                             startActivity(intent);
-                            */
+
                         }else if(which == 1){
                             file.delete();
                             finish();

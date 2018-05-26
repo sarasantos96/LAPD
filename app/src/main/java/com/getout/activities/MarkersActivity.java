@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import com.getout.foursquare.GetVenueDetailsArray;
 import com.getout.foursquare.Venue;
 import com.getout.google.Route;
 import com.getout.utils.MarkerAdapter;
+import com.getout.utils.ReadWriteFile;
 import com.google.gson.Gson;
 
 import org.w3c.dom.Text;
@@ -40,8 +42,13 @@ public class MarkersActivity extends AppCompatActivity {
 
         ListView markerList = (ListView) findViewById(R.id.markerList);
         final Spinner transport = (Spinner) findViewById(R.id.spinner);
-        TextView label = (TextView) findViewById(R.id.label_transport);
-        label.setText("Meio de transporte: ");
+        TextView label = (TextView) findViewById(R.id.label_transport2);
+        label.setText("Meio de Transporte: ");
+        TextView label2 = (TextView) findViewById(R.id.label_transport);
+        label2.setText("Nome da Rota: ");
+
+        EditText name_tx = (EditText) findViewById(R.id.route_name);
+        final String name = name_tx.getText().toString();
 
         List<String> options = new ArrayList<>();
         options.add("Carro");
@@ -78,7 +85,15 @@ public class MarkersActivity extends AppCompatActivity {
                 Route r = new Route(venues, isCar);
                 Gson gson = new Gson();
                 String routeAsString = gson.toJson(r);
+
+                EditText name_tx = (EditText) findViewById(R.id.route_name);
+                final String name = name_tx.getText().toString();
+
+
+
                 intent.putExtra("RouteString", routeAsString);
+                intent.putExtra("name", name);
+                intent.putExtra("save", "true");
 
                 startActivity(intent);
             }

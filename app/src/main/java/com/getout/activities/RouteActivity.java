@@ -5,11 +5,15 @@ import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.getout.R;
 import com.getout.foursquare.Venue;
 import com.getout.google.DirectionsTask;
 import com.getout.google.Route;
+import com.getout.utils.ReadWriteFile;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -23,6 +27,8 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import static android.view.View.INVISIBLE;
 
 public class RouteActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -44,7 +50,9 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         mapFragment.getMapAsync(this);
 
         Gson gson = new Gson();
-        String routeAsString = getIntent().getStringExtra("RouteString");
+        final String routeAsString = getIntent().getStringExtra("RouteString");
+        final String name = getIntent().getStringExtra("name");
+        final String save = getIntent().getStringExtra("save");
         Route route = gson.fromJson(routeAsString, Route.class);
 
         origin = route.getVenues().get(0).getLocation();
@@ -59,6 +67,20 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         }else{
             mode = "walking";
         }
+
+
+        Button button = (Button) findViewById(R.id.button);
+        if(save.equals("false")){
+            button.setVisibility(View.INVISIBLE );
+        }
+
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ReadWriteFile.saveToFile(v.getContext(), name, routeAsString);
+                Toast.makeText(v.getContext(), "Rota Guardada com sucesso",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
