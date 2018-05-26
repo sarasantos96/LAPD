@@ -4,11 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.getout.activities.MapsActivity;
-import com.getout.foursquare.Venue;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.api.client.json.Json;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
