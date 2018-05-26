@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.getout.R;
+import com.getout.foursquare.FoursquareGlobals;
 import com.getout.foursquare.GetVenueDetails;
 import com.getout.foursquare.Venue;
 import com.google.gson.Gson;
@@ -43,15 +44,22 @@ public class VenueActivity extends AppCompatActivity {
         toolbar.setTitle(venue.getName());
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setImageResource(R.drawable.ic_add);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
+        if (!FoursquareGlobals.VENUE_LIST.contains(venue.getId())) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FoursquareGlobals.VENUE_LIST.add(venue.getId());
+                    fab.hide();
+                    Snackbar.make(view, "Venue saved!", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
+        } else {
+            fab.hide();
+        }
 
         //Get Venue Info
         GetVenueDetails f = new GetVenueDetails(VenueActivity.this);
