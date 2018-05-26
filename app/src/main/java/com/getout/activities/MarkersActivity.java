@@ -1,9 +1,12 @@
 package com.getout.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -13,6 +16,7 @@ import com.getout.foursquare.FoursquareGlobals;
 import com.getout.foursquare.GetVenueDetails;
 import com.getout.foursquare.GetVenueDetailsArray;
 import com.getout.foursquare.Venue;
+import com.getout.google.Route;
 import com.getout.utils.MarkerAdapter;
 
 import org.w3c.dom.Text;
@@ -34,7 +38,7 @@ public class MarkersActivity extends AppCompatActivity {
         this.venues = new ArrayList<>();
 
         ListView markerList = (ListView) findViewById(R.id.markerList);
-        Spinner transport = (Spinner) findViewById(R.id.spinner);
+        final Spinner transport = (Spinner) findViewById(R.id.spinner);
         TextView label = (TextView) findViewById(R.id.label_transport);
         label.setText("Meio de transporte: ");
 
@@ -59,6 +63,21 @@ public class MarkersActivity extends AppCompatActivity {
 
         adapter = new MarkerAdapter(this, venues);
         markerList.setAdapter(adapter);
+
+        Button createRoute = (Button) findViewById(R.id.create_route);
+        createRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String mode = (String) transport.getSelectedItem();
+                boolean isCar = false;
+                if(mode.equals("Carro")) isCar = true;
+
+                Route r = new Route(venues, isCar);
+
+                //Intent intent = new Intent(MarkersActivity.this, RouteActivity.class);
+                //startActivity(intent);
+            }
+        });
     }
 
     public void addVenue(Venue v) {

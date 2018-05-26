@@ -35,6 +35,8 @@ public class Venue implements Parcelable {
     }
     public Venue(){};
 
+    public void setLocation(LatLng coord) {this.location = coord;}
+
     public LatLng getLocation() {
         return location;
     }
