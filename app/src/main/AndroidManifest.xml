@@ -44,12 +44,19 @@
         <activity
             android:name=".activities.VenueActivity"
             android:label="@string/title_activity_venue"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".activities.SettingsActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".activities.SettingsActivity" />
         <activity
             android:name=".activities.ForecastActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.RoutesActivity"
+            android:label="@string/title_activity_venue"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.MarkersActivity"
+            android:label="@string/title_activity_markers"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
