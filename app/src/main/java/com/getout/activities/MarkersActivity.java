@@ -18,6 +18,7 @@ import com.getout.foursquare.GetVenueDetailsArray;
 import com.getout.foursquare.Venue;
 import com.getout.google.Route;
 import com.getout.utils.MarkerAdapter;
+import com.google.gson.Gson;
 
 import org.w3c.dom.Text;
 
@@ -72,10 +73,14 @@ public class MarkersActivity extends AppCompatActivity {
                 boolean isCar = false;
                 if(mode.equals("Carro")) isCar = true;
 
-                Route r = new Route(venues, isCar);
+                Intent intent = new Intent(MarkersActivity.this, RouteActivity.class);
 
-                //Intent intent = new Intent(MarkersActivity.this, RouteActivity.class);
-                //startActivity(intent);
+                Route r = new Route(venues, isCar);
+                Gson gson = new Gson();
+                String routeAsString = gson.toJson(r);
+                intent.putExtra("RouteString", routeAsString);
+
+                startActivity(intent);
             }
         });
     }

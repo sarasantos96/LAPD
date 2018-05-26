@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.getout.R;
+import com.getout.foursquare.Venue;
 import com.getout.google.DirectionsTask;
+import com.getout.google.Route;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -16,6 +18,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +27,10 @@ import java.util.concurrent.ExecutionException;
 public class RouteActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private LatLng origin = new LatLng(41.190,-8.70);
-    private LatLng destination = new LatLng(41.1950,-8.51027);
-    private List<LatLng> waypoints;
+    private LatLng origin;
+    private LatLng destination;
+    private List<LatLng> waypoints = new ArrayList<>();
+    private String mode = "";
 
 
     @Override
@@ -38,13 +42,22 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        //TODO: Change for accepting arguments
-        waypoints = new ArrayList<>();
-        LatLng Ottowa, Montreal;
-        Ottowa = new LatLng(41.1820,-8.689);
-        Montreal = new LatLng(41.1496,-8.61099);
-        waypoints.add(Ottowa);
-        waypoints.add(Montreal);
+        Gson gson = new Gson();
+        String routeAsString = getIntent().getStringExtra("RouteString");
+        Route route = gson.fromJson(routeAsString, Route.class);
+
+        origin = route.getVenues().get(0).getLocation();
+        destination = route.getVenues().get(route.getVenues().size() - 1).getLocation();
+
+        for(int i = 1 ; i < route.getVenues().size() - 1; i++ ){
+            waypoints.add(route.getVenues().get(i).getLocation());
+        }
+
+        if(route.isCar()){
+            mode = "driving";
+        }else{
+            mode = "walking";
+        }
     }
 
 
@@ -55,7 +68,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setMinZoomPreference(11);
 
-        DirectionsTask f = new DirectionsTask(RouteActivity.this, origin, destination, waypoints );
+        DirectionsTask f = new DirectionsTask(RouteActivity.this, origin, destination, waypoints, mode );
         try {
             f.execute().get();
         } catch (InterruptedException e) {

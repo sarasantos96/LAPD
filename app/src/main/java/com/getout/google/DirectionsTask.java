@@ -29,12 +29,14 @@ public class DirectionsTask extends AsyncTask<String,Void,String> {
     private LatLng origin;
     private LatLng destination;
     private List<LatLng> waypoints;
+    private String mode = "";
 
-    public DirectionsTask(RouteActivity activity, LatLng origin, LatLng destination, List<LatLng> points){
+    public DirectionsTask(RouteActivity activity, LatLng origin, LatLng destination, List<LatLng> points, String mode){
         this.routeActivity = activity;
         this.origin = origin;
         this.destination = destination;
         this.waypoints = points;
+        this.mode = mode;
     }
 
     @Override
@@ -45,7 +47,8 @@ public class DirectionsTask extends AsyncTask<String,Void,String> {
             s_url = "https://maps.googleapis.com/maps/api/directions/json?"
                     +"key=" + DIRECTION_API_KEY
                     +"&origin="+ origin.latitude+","+origin.longitude
-                    +"&destination=" + destination.latitude+","+destination.longitude;
+                    +"&destination=" + destination.latitude+","+destination.longitude
+                    +"&mode=" + mode;
             if(!waypoints.isEmpty()){
                 s_url += "&waypoints=";
                 for (int i = 0; i < waypoints.size(); i++) {
