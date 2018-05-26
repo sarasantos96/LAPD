@@ -165,6 +165,11 @@ public class MapsActivity extends AppCompatActivity
             newAct.putExtra("coords", "" + lastKnowLocation.latitude + "," + lastKnowLocation.longitude);
             startActivity(newAct);
         }
+
+        if(id == R.id.nav_cria_rota){
+            Intent newAct = new Intent(getApplicationContext(), MarkersActivity.class);
+            startActivity(newAct);
+        }
         
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
