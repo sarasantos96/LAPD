@@ -112,4 +112,6 @@ public class Venue implements Parcelable {
     public String getPhoto() {
         return photo;
     }
+
+    public void setAddress(String address) {this.address = address;}
 }

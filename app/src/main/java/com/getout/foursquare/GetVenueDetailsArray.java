@@ -97,6 +97,7 @@ public class GetVenueDetailsArray extends AsyncTask<List<String>,Void,List<Strin
         String description = "";
         String url = "";
         String photo = "";
+        String address = "";
 
         JSONObject jsonObject = new JSONObject(result);
         JSONObject jsonresponse = new JSONObject(jsonObject.get("response").toString());
@@ -105,6 +106,11 @@ public class GetVenueDetailsArray extends AsyncTask<List<String>,Void,List<Strin
         //Get description
         if(jsonVenue.has("name")){
             name = jsonVenue.getString("name");
+        }
+
+        JSONObject jsonLocation = (JSONObject) jsonVenue.get("location");
+        if(jsonLocation.has("address")){
+            address = jsonLocation.getString("address");
         }
 
         //Get Contact Info
@@ -139,6 +145,7 @@ public class GetVenueDetailsArray extends AsyncTask<List<String>,Void,List<Strin
         venue.setDescription(description);
         venue.setPhoto(photo);
         venue.setUrl(url);
+        venue.setAddress(address);
 
         return venue;
     }

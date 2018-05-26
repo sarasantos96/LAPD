@@ -3,17 +3,56 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingBottom="10dp">
 
-    <TextView
-        android:id="@+id/markerName"
-        android:layout_width="126dp"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/venue_photo"
+        android:layout_width="89dp"
+        android:layout_height="79dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="11dp"
-        android:text="Marker Name"
-        android:textSize="18sp" />
+        app:srcCompat="@drawable/ic_venue" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:id="@+id/venue_name"
+            android:layout_width="215dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="99dp"
+            android:layout_marginTop="11dp"
+            android:text="Marker Name"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/venue_address"
+            android:layout_width="215dp"
+            android:layout_height="42dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/venue_name"
+            android:layout_marginTop="44dp"
+            android:text="Marker Address" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/remove_button"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/venue_name"
+            android:layout_marginEnd="32dp"
+            android:clickable="true"
+            app:srcCompat="@android:drawable/button_onoff_indicator_off" />
+
+    </RelativeLayout>
 
 </RelativeLayout>
