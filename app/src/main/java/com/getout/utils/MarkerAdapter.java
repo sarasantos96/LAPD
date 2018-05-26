@@ -56,14 +56,12 @@ public class MarkerAdapter extends BaseAdapter{
         Venue v = (Venue)getItem(position);
 
         ImageView venueImage = (ImageView) rowView.findViewById(R.id.venue_photo);
-        TextView venueAddress = (TextView) rowView.findViewById(R.id.venue_address);
         TextView venueName = (TextView) rowView.findViewById(R.id.venue_name);
 
         Glide.with(context)
                 .load(v.getPhoto())
                 .apply(RequestOptions.circleCropTransform())
                 .into(venueImage);
-        venueAddress.setText(v.getAddress());
         venueName.setText(v.getName());
 
         return rowView;
