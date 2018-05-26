@@ -31,6 +31,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
     private LatLng destination;
     private List<LatLng> waypoints = new ArrayList<>();
     private String mode = "";
+    private String json = "";
 
 
     @Override
@@ -79,7 +80,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
     }
 
 
-    public void drawPolyline(List<LatLng> points, List<LatLng> markers){
+    public void drawPolyline(List<LatLng> points, List<LatLng> markers, String json){
         PolylineOptions options = new PolylineOptions().width(9).color(Color.RED).geodesic(true);
         for (int z = 0; z < points.size(); z++) {
             LatLng point = points.get(z);
@@ -96,5 +97,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
             circleOptions.strokeWidth(2);
             mMap.addCircle(circleOptions);
         }
+
+        this.json = json;
     }
 }

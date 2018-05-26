@@ -96,7 +96,7 @@ public class DirectionsTask extends AsyncTask<String,Void,String> {
             List<LatLng> points = parseJSON(result);
             waypoints.add(origin);
             waypoints.add(destination);
-            routeActivity.drawPolyline(points,waypoints);
+            routeActivity.drawPolyline(points,waypoints, result);
         } catch (JSONException e) {
             e.printStackTrace();
         }
