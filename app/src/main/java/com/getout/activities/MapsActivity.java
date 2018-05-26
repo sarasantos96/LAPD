@@ -114,16 +114,6 @@ public class MapsActivity extends AppCompatActivity
 
         markers = new ArrayList<>();
         venues = new ArrayList<>();
-
-        //Get Venue Info
-        DirectionsTask f = new DirectionsTask(MapsActivity.this);
-        try {
-            f.execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -374,25 +364,6 @@ public class MapsActivity extends AppCompatActivity
         String venueAsString = gson.toJson(venue);
         intent.putExtra("VenueString", venueAsString);
         startActivity(intent);
-    }
-
-    public void drawPolyline(List<LatLng> points, List<LatLng> markers){
-        PolylineOptions options = new PolylineOptions().width(9).color(Color.RED).geodesic(true);
-        for (int z = 0; z < points.size(); z++) {
-            LatLng point = points.get(z);
-            options.add(point);
-        }
-        mMap.addPolyline(options);
-
-        for(int i = 0; i< markers.size(); i++) {
-            CircleOptions circleOptions = new CircleOptions();
-            circleOptions.center(markers.get(i));
-            circleOptions.radius(5);
-            circleOptions.strokeColor(Color.RED);
-            circleOptions.fillColor(Color.RED);
-            circleOptions.strokeWidth(2);
-            mMap.addCircle(circleOptions);
-        }
     }
 
 }

@@ -44,7 +44,7 @@
         <activity
             android:name=".activities.VenueActivity"
             android:label="@string/title_activity_venue"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.SettingsActivity" />
         <activity
             android:name=".activities.ForecastActivity"
@@ -56,7 +56,10 @@
         <activity
             android:name=".activities.MarkersActivity"
             android:label="@string/title_activity_markers"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.RouteActivity"
+            android:label="@string/title_activity_route"></activity>
     </application>
 
 </manifest>
