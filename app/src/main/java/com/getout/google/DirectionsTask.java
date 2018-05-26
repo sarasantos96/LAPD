@@ -3,7 +3,7 @@ package com.getout.google;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.getout.activities.MapsActivity;
+import com.getout.activities.RouteActivity;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -15,10 +15,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,20 +24,19 @@ import static com.getout.google.GoogleGlobals.DIRECTION_API_KEY;
 
 public class DirectionsTask extends AsyncTask<String,Void,String> {
     private List<LatLng> points;
-    private MapsActivity mapsActivity;
+    private RouteActivity routeActivity;
     //TODO: Change this parameters for user input
-    private LatLng origin = new LatLng(41.190,-8.70);
-    private LatLng destination = new LatLng(41.1950,-8.51027);
+    private LatLng origin;
+    private LatLng destination;
     private List<LatLng> waypoints;
+    private String mode = "";
 
-    public DirectionsTask(MapsActivity activity){
-        this.mapsActivity = activity;
-        waypoints = new ArrayList<>();
-        LatLng Ottowa, Montreal;
-        Ottowa = new LatLng(41.1820,-8.689);
-        Montreal = new LatLng(41.1496,-8.61099);
-        waypoints.add(Ottowa);
-        waypoints.add(Montreal);
+    public DirectionsTask(RouteActivity activity, LatLng origin, LatLng destination, List<LatLng> points, String mode){
+        this.routeActivity = activity;
+        this.origin = origin;
+        this.destination = destination;
+        this.waypoints = points;
+        this.mode = mode;
     }
 
     @Override
@@ -50,7 +47,8 @@ public class DirectionsTask extends AsyncTask<String,Void,String> {
             s_url = "https://maps.googleapis.com/maps/api/directions/json?"
                     +"key=" + DIRECTION_API_KEY
                     +"&origin="+ origin.latitude+","+origin.longitude
-                    +"&destination=" + destination.latitude+","+destination.longitude;
+                    +"&destination=" + destination.latitude+","+destination.longitude
+                    +"&mode=" + mode;
             if(!waypoints.isEmpty()){
                 s_url += "&waypoints=";
                 for (int i = 0; i < waypoints.size(); i++) {
@@ -98,7 +96,7 @@ public class DirectionsTask extends AsyncTask<String,Void,String> {
             List<LatLng> points = parseJSON(result);
             waypoints.add(origin);
             waypoints.add(destination);
-            mapsActivity.drawPolyline(points,waypoints);
+            routeActivity.drawPolyline(points,waypoints, result);
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -16,4 +16,5 @@
     <string name="title_activity_venue">VenueActivity</string>
     <string name="title_activity_routes">RoutesActivity</string>
     <string name="title_activity_markers">MarkersActivity</string>
+    <string name="title_activity_route">A Minha Rota</string>
 </resources>
