@@ -8,7 +8,7 @@
 
     <Button
         android:id="@+id/deleteAccount"
-        android:layout_width="364dp"
+        android:layout_width="330dp"
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
@@ -27,7 +27,7 @@
 
     <Button
         android:id="@+id/signOut"
-        android:layout_width="369dp"
+        android:layout_width="331dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
@@ -173,7 +173,7 @@
 
     <Button
         android:id="@+id/save"
-        android:layout_width="wrap_content"
+        android:layout_width="119dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
@@ -181,14 +181,14 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="Save distance"
+        android:text="Save radius"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.969"
+        app:layout_constraintHorizontal_bias="0.694"
         app:layout_constraintStart_toEndOf="@+id/radius"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.681" />
+        app:layout_constraintVertical_bias="0.674" />
 
     <TextView
         android:id="@+id/textView2"

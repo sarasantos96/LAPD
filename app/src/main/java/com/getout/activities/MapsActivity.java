@@ -27,8 +27,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.getout.R;
+import com.getout.foursquare.GetVenueDetails;
 import com.getout.foursquare.SearchVenues;
 import com.getout.foursquare.Venue;
+import com.getout.google.DirectionsTask;
 import com.getout.google.GoogleGlobals;
 import com.getout.utils.Utils;
 import com.getout.weather.Weather;
@@ -39,14 +41,18 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
-
+import com.google.maps.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class MapsActivity extends AppCompatActivity

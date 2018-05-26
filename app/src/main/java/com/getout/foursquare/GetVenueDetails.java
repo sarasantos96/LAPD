@@ -118,6 +118,8 @@ public class GetVenueDetails extends AsyncTask<String,Void,String> {
             prefix = photoJson.getString("prefix");
             size = photoJson.getString("width") + "x" + photoJson.getString("height");
             photo = prefix + size + suffix;
+        }else{
+            photo = "";
         }
 
         venue.setContact(contact);
