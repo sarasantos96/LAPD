@@ -27,8 +27,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.getout.R;
+import com.getout.foursquare.GetVenueDetails;
 import com.getout.foursquare.SearchVenues;
 import com.getout.foursquare.Venue;
+import com.getout.google.DirectionsTask;
 import com.getout.google.GoogleGlobals;
 import com.getout.utils.Utils;
 import com.getout.weather.Weather;
@@ -39,14 +41,18 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
-
+import com.google.maps.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class MapsActivity extends AppCompatActivity
@@ -108,6 +114,16 @@ public class MapsActivity extends AppCompatActivity
 
         markers = new ArrayList<>();
         venues = new ArrayList<>();
+
+        //Get Venue Info
+        DirectionsTask f = new DirectionsTask(MapsActivity.this);
+        try {
+            f.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -358,6 +374,25 @@ public class MapsActivity extends AppCompatActivity
         String venueAsString = gson.toJson(venue);
         intent.putExtra("VenueString", venueAsString);
         startActivity(intent);
+    }
+
+    public void drawPolyline(List<LatLng> points, List<LatLng> markers){
+        PolylineOptions options = new PolylineOptions().width(9).color(Color.RED).geodesic(true);
+        for (int z = 0; z < points.size(); z++) {
+            LatLng point = points.get(z);
+            options.add(point);
+        }
+        mMap.addPolyline(options);
+
+        for(int i = 0; i< markers.size(); i++) {
+            CircleOptions circleOptions = new CircleOptions();
+            circleOptions.center(markers.get(i));
+            circleOptions.radius(5);
+            circleOptions.strokeColor(Color.RED);
+            circleOptions.fillColor(Color.RED);
+            circleOptions.strokeWidth(2);
+            mMap.addCircle(circleOptions);
+        }
     }
 
 }

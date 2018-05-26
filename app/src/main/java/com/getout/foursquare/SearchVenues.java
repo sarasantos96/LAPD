@@ -32,11 +32,6 @@ public class SearchVenues extends AsyncTask<String,Void,String>{
         this.activity = activity;
     }
 
-    /*
-    params[0]: ll (latitude,longitude)
-    params[1]: query
-    TODO: make radius a parameter; now default is 5km
-     */
     @Override
     protected String doInBackground(String... params) {
 
