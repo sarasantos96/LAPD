@@ -19,6 +19,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.getout.R;
 import com.getout.google.GoogleGlobals;
 import com.getout.utils.ForecastAdapter;
+import com.getout.utils.ReadWriteFile;
 import com.getout.weather.ForecastAtom;
 import com.getout.weather.WeatherAPI;
 import com.google.android.gms.maps.model.LatLng;
@@ -69,6 +70,10 @@ public class ForecastActivity extends AppCompatActivity implements NavigationVie
         ListView listView = (ListView) findViewById(R.id.forecast_list_view);
         adapter = new ForecastAdapter(this, new ArrayList<ForecastAtom>());
         listView.setAdapter(adapter);
+
+        String s1 = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.  It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.";
+        ReadWriteFile.saveToFile(this.getApplicationContext(), "trip to porto", s1);
+        //ReadWriteFile.listFiles(this.getApplicationContext());
     }
 
     @Override
