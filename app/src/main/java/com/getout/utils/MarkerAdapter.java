@@ -10,11 +10,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.getout.R;
+import com.getout.activities.MarkersActivity;
 import com.getout.foursquare.FoursquareGlobals;
 import com.getout.foursquare.Venue;
+import com.getout.google.GoogleGlobals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,13 +53,18 @@ public class MarkerAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View rowView = inflater.inflate(R.layout.list_item_markers, parent, false);
-
-        TextView id = (TextView) rowView.findViewById(R.id.markerName);
         Venue v = (Venue)getItem(position);
 
-        Log.e("Venue", v.toString());
+        ImageView venueImage = (ImageView) rowView.findViewById(R.id.venue_photo);
+        TextView venueAddress = (TextView) rowView.findViewById(R.id.venue_address);
+        TextView venueName = (TextView) rowView.findViewById(R.id.venue_name);
 
-        id.setText(v.getName());
+        Glide.with(context)
+                .load(v.getPhoto())
+                .apply(RequestOptions.circleCropTransform())
+                .into(venueImage);
+        venueAddress.setText(v.getAddress());
+        venueName.setText(v.getName());
 
         return rowView;
     }

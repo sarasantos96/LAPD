@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.getout.activities.MarkersActivity;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -97,6 +98,10 @@ public class GetVenueDetailsArray extends AsyncTask<List<String>,Void,List<Strin
         String description = "";
         String url = "";
         String photo = "";
+        String address = "";
+        LatLng coord = new LatLng(0, 0);
+        double lat = 0;
+        double lng = 0;
 
         JSONObject jsonObject = new JSONObject(result);
         JSONObject jsonresponse = new JSONObject(jsonObject.get("response").toString());
@@ -105,6 +110,14 @@ public class GetVenueDetailsArray extends AsyncTask<List<String>,Void,List<Strin
         //Get description
         if(jsonVenue.has("name")){
             name = jsonVenue.getString("name");
+        }
+
+        JSONObject jsonLocation = (JSONObject) jsonVenue.get("location");
+        if(jsonLocation.has("address")){
+            address = jsonLocation.getString("address");
+        }
+        if(jsonLocation.has("lat") && jsonLocation.has("lng")){
+            coord = new LatLng(jsonLocation.getDouble("lat"),jsonLocation.getDouble("lng"));
         }
 
         //Get Contact Info
@@ -139,6 +152,8 @@ public class GetVenueDetailsArray extends AsyncTask<List<String>,Void,List<Strin
         venue.setDescription(description);
         venue.setPhoto(photo);
         venue.setUrl(url);
+        venue.setAddress(address);
+        venue.setLocation(coord);
 
         return venue;
     }
