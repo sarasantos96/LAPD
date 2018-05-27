@@ -69,13 +69,14 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         }
 
 
-        Button button = (Button) findViewById(R.id.button);
+        final Button button = (Button) findViewById(R.id.button);
         if(save.equals("false")){
             button.setVisibility(View.INVISIBLE );
         }
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                button.setVisibility(INVISIBLE);
                 ReadWriteFile.saveToFile(v.getContext(), name, routeAsString);
                 Toast.makeText(v.getContext(), "Rota Guardada com sucesso",
                         Toast.LENGTH_SHORT).show();

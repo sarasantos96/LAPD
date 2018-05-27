@@ -53,13 +53,11 @@ public class MarkersActivity extends AppCompatActivity {
         String json = prefs.getString("venues", "");
 
         try {
-            Log.e("ENTROU", " asdasdasd");
             populateVenues(json);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        Log.e("CREATE SIZE", Integer.toString(this.venues.size()));
 
         ListView markerList = (ListView) findViewById(R.id.markerList);
         final Spinner transport = (Spinner) findViewById(R.id.spinner);
@@ -116,6 +114,10 @@ public class MarkersActivity extends AppCompatActivity {
                 intent.putExtra("name", name);
                 intent.putExtra("save", "true");
 
+
+                SharedPreferences prefs = getSharedPreferences("com.getout", Context.MODE_PRIVATE);
+                prefs.edit().remove("venues").commit();
+
                 startActivity(intent);
             }
         });
@@ -156,6 +158,5 @@ public class MarkersActivity extends AppCompatActivity {
             this.venues.add(venue);
         }
 
-        Log.e("SAIU", " ASDASDASDASDAS ");
     }
 }
